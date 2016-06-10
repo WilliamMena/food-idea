@@ -1,5 +1,3 @@
-require "food_ideas/version"
+require "./lib/food_ideas/version"
 
-module FoodIdeas
-  # Your code goes here...
-end
+require './lib/food_ideas/cli'
