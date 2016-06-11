@@ -1,20 +1,24 @@
-# Our CLI Controller
-class FoodIdeas::CLI
+class CLI
+
   require 'pry'
+  require 'nokogiri'
+  require 'open-uri'
 
 @@all_recipes = []
 @@ingredients = []
 
   def greet
-    puts "Welcome to my gem"
+    puts "Welcome to my gem".bold
     puts "Instructions, blah blah"
     user_ingredients
     ingredients_again
+    goodbye
   end
 
   def user_ingredients
-    puts "Please enter up to 5 ingredients for the recipe search. Each ingredient one at a time"
-    puts "Type 'go' when no more ingredients"
+    puts "Please enter up to #{5.to_s.bold} ingredients for the recipe search. Each ingredient one at a time"
+    puts "Type #{"'go'".cyan} when no more ingredients"
+    puts "\n"
       x = 0
       input = nil
       while input != "exit"
@@ -27,72 +31,70 @@ class FoodIdeas::CLI
       end
         case input
         when "go"
+          puts "This may take a few seconds. Please wait."
           show_recipes
+          break
           #search for the recipe
         when "exit"
           #can ask if the user is sure s/he wants to exit the program
           break
         else
           ingredients << input
-          # binding.pry
         end
       end
-
-#either input 1 by 1 or all 5 in one string. 
-
-
-
-# 2.2.3 :001 > "1,2,3,4"
-#  => "1,2,3,4" 
-# 2.2.3 :002 > "1,2,3,4".split(",")
-#  => ["1", "2", "3", "4"] 
-# 2.2.3 :003 > "eggs cilantro mango chicken"
-#  => "eggs cilantro mango chicken" 
-# 2.2.3 :004 > "eggs cilantro mango chicken".split(" ")
-#  => ["eggs", "cilantro", "mango", "chicken"]
   end
 
   def show_recipes
-    puts "1. Recipe 1"
-    puts "2. Recipe 2"
-    puts "3. Recipe 3"
-    puts "4. Recipe 4"
-    puts "5. Recipe 5"
-    puts "Which recipe would you like more information on? Enter the number"
+    #system("open #{recipe.url}") Opens the recipes url
+    Scraper.new.scrape_food_network
+    puts_recipe
  
 input = nil
     while input != "exit"
-      input = gets.strip.downcase 
+      puts "\n"
+      input = gets.strip.downcase
       case input
       when "1"
-        puts "Recipe 1"
-        puts "Cook time - Serving"
-        puts "Description 1"
+        puts "#{Recipe.all[0].name}".bold
+        puts "Cook time: #{Recipe.all[0].time}"#add servings afterwards seperated with a -
+        puts "#{Recipe.all[0].description}"
+        puts "\n"
+        puts "Type #{"'url'".cyan} to open recipe. #{"'list'".cyan} to view all recipes again. Another number from the list to view another recipe or #{"'exit'".cyan} to exit."
+        current_view = 1
       when "2"
-        puts "Recipe 2"
-        puts "Cook time - Serving"
-        puts "Description 2"
+        puts "#{Recipe.all[1].name}".bold
+        puts "Cook time: #{Recipe.all[1].time}"
+        puts "#{Recipe.all[1].description}"
+        puts "\n"
+        puts "Type #{"'url'".cyan} to open recipe. #{"'list'".cyan} to view all recipes again. Another number from the list to view another recipe or #{"'exit'".cyan} to exit."
+        current_view = 2
       when "3"
-        puts "Recipe 3"
-        puts "Cook time - Serving"
-        puts "Description 3"
+        puts "#{Recipe.all[2].name}".bold
+        puts "Cook time: #{Recipe.all[2].time}"
+        puts "#{Recipe.all[2].description}"
+        puts "\n"
+        puts "Type #{"'url'".cyan} to open recipe. #{"'list'".cyan} to view all recipes again. Another number from the list to view another recipe or #{"'exit'".cyan} to exit."
+        current_view = 3
       when "4"
-        puts "Recipe 4"
-        puts "Cook time - Serving"
-        puts "Description 4"
+        puts "#{Recipe.all[3].name}".bold
+        puts "Cook time: #{Recipe.all[3].time}"
+        puts "#{Recipe.all[3].description}"
+        puts "\n"
+        puts "Type #{"'url'".cyan} to open recipe. #{"'list'".cyan} to view all recipes again. Another number from the list to view another recipe or #{"'exit'".cyan} to exit."
+        current_view = 4
       when "5"
-        puts "Recipe 5"
-        puts "Cook time - Serving"
-        puts "Description 5"
+        puts "#{Recipe.all[4].name}".bold
+        puts "Cook time: #{Recipe.all[4].time}"
+        puts "#{Recipe.all[4].description}"
+        puts "\n"
+        puts "Type #{"'url'".cyan} to open recipe. #{"'list'".cyan} to view all recipes again. Another number from the list to view another recipe or #{"'exit'".cyan} to exit."
+        current_view = 5
       when "6"
         puts "next recipes, only 5 for now though, sorry. Work in progress"
       when "list"
-        puts "1. Recipe 1"
-        puts "2. Recipe 2"
-        puts "3. Recipe 3"
-        puts "4. Recipe 4"
-        puts "5. Recipe 5"
-        puts "Which recipe would you like more information on? Enter the number"
+        puts_recipe
+      when "url"
+        system("open #{Recipe.all[current_view-1].url}")
       end
     end
    #3or5 at a time. Option for showing more recipes. 
@@ -107,6 +109,15 @@ input = nil
     @@ingredients
   end
 
+  def clear
+    @@ingredients.clear
+    Recipe.clear
+  end
+
+  def self.ingredients
+    @@ingredients
+  end
+
   def ingredients_again
 
     input = nil
@@ -115,20 +126,37 @@ input = nil
       input = gets.strip.downcase
       case input
       when "y"
+        #the second time around the code breaks
+        clear
         user_ingredients
+        ingredients_again
         break
       else
         "I'm not sure what you want. Type 'y' for yes, 'n' for no"
       end
     end
-    goodbye
   end
 
   def goodbye
     puts "Thanks for using my gem"
   end
 
+  def puts_recipe
+    puts "\n"
+    puts "YOUR RECIPES".bold
+    Recipe.all.each.with_index do |r, i|
+      if i+1 <= 5
+        puts "#{i+1}. #{Recipe.all[i].name}"
+      end
+    end
 
+    # puts "1. #{Recipe.all[0].name}"
+    # puts "2. #{Recipe.all[1].name}"
+    # puts "3. #{Recipe.all[2].name}"
+    # puts "4. #{Recipe.all[3].name}"
+    # puts "5. #{Recipe.all[4].name}"
+    puts "Which recipe would you like more information on? Enter the number"
+  end
 
 
 

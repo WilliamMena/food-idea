@@ -27,3 +27,9 @@ So for every item the user inputs, we can enter a plus inbetween each item
 
 http://allrecipes.com/search/results/?ingincl=chicken,mango,cilantro&sort=re
 each item downcased in between ingincl= and &sort=re
+
+PROBLEMS
+Have to find solution for when the website returns no results. When no results, it
+only shows one recipe with different/similar ingredients. 
+http://www.foodnetwork.com/search/search-results.recipes.html?searchTerm=egg+cheeeeee&form=global&_charset_=UTF-8
+Can use the "showing 1 recipe result for" number inside to determine when to say "Sorry, no results for this. Can you enter another set of ingredients"
