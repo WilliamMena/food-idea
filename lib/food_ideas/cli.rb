@@ -26,12 +26,13 @@ class CLI
         print "#{x}. "
         input = gets.strip.downcase
       if x >= 5
+        puts "This may take a few seconds. Please wait.".bold
         show_recipes
         break
       end
         case input
         when "go"
-          puts "This may take a few seconds. Please wait."
+          puts "This may take a few seconds. Please wait.".bold
           show_recipes
           break
           #search for the recipe
@@ -143,25 +144,72 @@ input = nil
 
   def puts_recipe
     puts "\n"
-    puts "YOUR RECIPES".bold
-    Recipe.all.each.with_index do |r, i|
-      if i+1 <= 5
-        puts "#{i+1}. #{Recipe.all[i].name}"
+    if Recipe.all.length == 0
+      puts "There are no recipes for your ingredients. Please EXIT and enter a new set of ingredients.".bold
+    else
+      puts "YOUR RECIPES".bold
+      Recipe.all.each.with_index do |r, i|
+        if i+1 <= 5
+          puts "#{i+1}. #{Recipe.all[i].name}"
+        end
       end
     end
-
     # puts "1. #{Recipe.all[0].name}"
     # puts "2. #{Recipe.all[1].name}"
     # puts "3. #{Recipe.all[2].name}"
     # puts "4. #{Recipe.all[3].name}"
     # puts "5. #{Recipe.all[4].name}"
-    puts "Which recipe would you like more information on? Enter the number"
+    if Recipe.all.length > 0
+      puts "Which recipe would you like more information on? Enter the number"
+    end
+  end
+
+end
+
+
+class Blog
+require 'nokogiri'
+require 'open-uri'
+  def greeting
+    "Hey, my name is William Mena and welcome to my blog!"
+    ask_topic
+    rant
+  end
+
+  def ask_topic
+    #topics will vary. Enter more questions.
+    puts "Why did you join software development?"
+  end
+
+  def rant
+
   end
 
 
-
-
-
-
-
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

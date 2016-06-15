@@ -33,3 +33,5 @@ Have to find solution for when the website returns no results. When no results, 
 only shows one recipe with different/similar ingredients. 
 http://www.foodnetwork.com/search/search-results.recipes.html?searchTerm=egg+cheeeeee&form=global&_charset_=UTF-8
 Can use the "showing 1 recipe result for" number inside to determine when to say "Sorry, no results for this. Can you enter another set of ingredients"
+
+Can impliment in the code when no results are found and it reroutes to another search.
