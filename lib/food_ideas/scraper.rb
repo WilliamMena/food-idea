@@ -1,12 +1,15 @@
-require 'open-uri'
-require 'pry'
-require 'nokogiri'
+# require 'open-uri'
+# require 'pry'
+# require 'nokogiri'
+
 class Scraper
-  attr_accessor :url_middle, :url_begin, :url_end
+  attr_accessor :url_middle, :url_begin, :url_end, :ingredients
   attr_reader :food_network_url
 #http://www.foodnetwork.com/search/search-results.recipes.html?searchTerm=garlic+cilantro+ground+waffles&form=global&_charset_=UTF-8
 
-
+  def initialize(ingredients)
+    @ingredients = ingredients
+  end
 
   def scrape_food_network
     @url_begin = "http://www.foodnetwork.com/search/search-results.recipes.html?searchTerm="
@@ -27,21 +30,14 @@ class Scraper
       # recipe.url = food_network_url+doc.css("article.recipe").first.css("h6 a").attr("href").value
       # recipe.description = recipe_doc.css("p.quotation").text.strip.delete "[]"
     end
-    #doc.css("article.recipe").first.css("h6").text.strip == NAME
-    #doc.css("article.recipe").first.css("dd").text == Cooking Time
-    #doc.css("article.recipe").first.css("h6 a").attr("href").value == URL
-    #can be used to guide to link info and it's where I need to retrieve description and serving size
-    #have to join with original site name
-    #recipe_url = food_network_url+doc.css("article.recipe").first.css("h6 a").attr("href").value == recipes URL
-    #recipe_doc = Nokogiri::HTML(open(recipe.url))
   end
 
-  def self.ingredients
-    CLI.ingredients
-  end
+  # def self.ingredients
+  #   CLI.ingredients
+  # end
 
   def url_full
-    @url_middle = Scraper.ingredients.join("+")    
+    @url_middle = ingredients.join("+")    
     full = @url_begin+@url_middle+@url_end
     full
   end

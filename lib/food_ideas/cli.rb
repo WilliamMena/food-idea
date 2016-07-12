@@ -1,15 +1,33 @@
 class CLI
 
-  require 'pry'
-  require 'nokogiri'
-  require 'open-uri'
+  # require 'pry'
+  # require 'nokogiri'
+  # require 'open-uri'
 
-@@all_recipes = []
-@@ingredients = []
+# @@all_recipes = []
+# @@ingredients = []
+
+attr_accessor :ingredients
+
+  # def ingredients
+  #   @ingredients
+  # end
+
+  # def ingredeitns=(something)
+  #   @ingredients = something
+  # end
+
+  def initialize
+    @ingredients = []
+  end
+
+  def self.ingredients
+    @ingredients
+  end
 
   def greet
     puts "Welcome to my gem".bold
-    puts "Instructions, blah blah"
+    puts "The purpose of this gem is to give you ideas on what to eat when you're undecisive."
     user_ingredients
     ingredients_again
     goodbye
@@ -17,40 +35,41 @@ class CLI
 
   def user_ingredients
     puts "Please enter up to #{5.to_s.bold} ingredients for the recipe search. Each ingredient one at a time"
-    puts "Type #{"'go'".cyan} when no more ingredients"
+    puts "Type #{"'go'".cyan} when you are ready to receive the recipes"
     puts "\n"
-      x = 0
-      input = nil
-      while input != "exit"
-        x += 1
-        print "#{x}. "
-        input = gets.strip.downcase
-      if x >= 5
+
+    x = 0
+    input = nil
+    while input != "exit"
+      x += 1
+      print "#{x}. "
+      input = gets.strip.downcase
+    if x >= 5
+      puts "This may take a few seconds. Please wait.".bold
+      show_recipes
+      break
+    end
+      case input
+      when "go"
         puts "This may take a few seconds. Please wait.".bold
         show_recipes
         break
+        #search for the recipe
+      when "exit"
+        #can ask if the user is sure s/he wants to exit the program
+        break
+      else
+        ingredients << input
       end
-        case input
-        when "go"
-          puts "This may take a few seconds. Please wait.".bold
-          show_recipes
-          break
-          #search for the recipe
-        when "exit"
-          #can ask if the user is sure s/he wants to exit the program
-          break
-        else
-          ingredients << input
-        end
-      end
+    end
   end
 
   def show_recipes
     #system("open #{recipe.url}") Opens the recipes url
-    Scraper.new.scrape_food_network
+    Scraper.new(ingredients).scrape_food_network
     puts_recipe
  
-input = nil
+    input = nil
     while input != "exit"
       puts "\n"
       input = gets.strip.downcase
@@ -106,18 +125,15 @@ input = nil
    #1-5 will give details about the recipe.
  end
 
-  def ingredients
-    @@ingredients
-  end
+  # def ingredients
+  #   ingredients
+  # end
 
   def clear
-    @@ingredients.clear
+    ingredients.clear
     Recipe.clear
   end
 
-  def self.ingredients
-    @@ingredients
-  end
 
   def ingredients_again
 
@@ -154,62 +170,9 @@ input = nil
         end
       end
     end
-    # puts "1. #{Recipe.all[0].name}"
-    # puts "2. #{Recipe.all[1].name}"
-    # puts "3. #{Recipe.all[2].name}"
-    # puts "4. #{Recipe.all[3].name}"
-    # puts "5. #{Recipe.all[4].name}"
     if Recipe.all.length > 0
       puts "Which recipe would you like more information on? Enter the number"
     end
   end
 
 end
-
-
-class Blog
-require 'nokogiri'
-require 'open-uri'
-  def greeting
-    "Hey, my name is William Mena and welcome to my blog!"
-    ask_topic
-    rant
-  end
-
-  def ask_topic
-    #topics will vary. Enter more questions.
-    puts "Why did you join software development?"
-  end
-
-  def rant
-
-  end
-
-
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["williammena1991@gmail.com"]
 
   spec.summary       = "My gem purpose is to give you ideas on what to eat when you're undecisive."
-  spec.description   = "You mention up to 5 ingredients and it will give you back 5 recipes(more recipes soon)."
+  spec.description   = "My gem purpose is to give you ideas on what to eat when you're undecisive. You enter up to 5 ingredients and it will give you back 5 recipes (more recipes and other updates on the way)."
   spec.homepage      = "https://github.com/WilliamMena/food-idea"
   spec.license       = "MIT"
 
@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.dependency "nokogiri"
+  # spec.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.8'
 end
