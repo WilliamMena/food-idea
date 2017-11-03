@@ -2,6 +2,9 @@
 
 HEY! Welcome to my gem FoodIdeas. The concept behind this ruby gem is to give you a list of recipe ideas when you're unsure of what to eat. The user (often times you or your friends who you're showing this too) will insert a list of ingredients (I suggest things you already have in your fridge) when prompted for them and the gem will return to you up to 5 recipes. 
 
+## Blog Post
+http://williammena.github.io/2016/11/03/oh_man_has_it_been_a_while_sinatra_assessment/
+
 ## Installation
 For installing this gem into your system, look below for the two options currently available. 
 
